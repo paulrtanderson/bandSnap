@@ -3,7 +3,8 @@ from django.http import HttpResponse
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Welcome to bandsnap!")
+    context_dict = {}
+    return render(request,'bandsnap/index.html',context=context_dict)
 
 def signup(request):
     return HttpResponse("this will be the signup page")

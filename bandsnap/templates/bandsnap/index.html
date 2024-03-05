@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+        <title>Index</title>
+    </head>
+    <p>test template</p>
+    <img src="{% static 'images/logo.jpg' %}" alt="bandsnap logo" />
+    <img src="{{ MEDIA_URL }}logo.jpg" alt="another bandsnap logo" />
+</html>
