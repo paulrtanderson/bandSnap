@@ -7,13 +7,17 @@ def index(request):
     return render(request,'bandsnap/index.html',context=context_dict)
 
 def signup(request):
-    return HttpResponse("this will be the signup page")
+    context_dict = {}
+    return render(request,'bandsnap/signup.html',context=context_dict)
 
 def login(request):
-    return HttpResponse("this will be the login page")
+    context_dict = {}
+    return render(request,'bandsnap/login.html',context=context_dict)
 
 def search(request):
-    return HttpResponse("this will be the search page")
+    context_dict = {}
+    return render(request,'bandsnap/search.html',context=context_dict)
 
 def about(request):
-    return HttpResponse("this will be the about page")
+    context_dict = {}
+    return render(request,'bandsnap/about.html',context=context_dict)
