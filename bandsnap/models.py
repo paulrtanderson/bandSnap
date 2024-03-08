@@ -5,13 +5,22 @@ from django.contrib.auth.models import User
 
 
 class Skill(models.Model):
-    name = models.CharField(max_length=200, primary_key=True)
+    name = models.CharField(max_length=200, unique=True)
+
+
+    def __str__(self):
+        return self.name
 
 
 class Gig(models.Model):
+    name = models.CharField(max_length=200, unique=True)
     date = models.DateField()
     venue_address = models.CharField(max_length=200)
     description = models.TextField()
+
+
+    def __str__(self):
+        return self.name
 
 
 # Bands and Artists will be implemented through the Django User object.
@@ -26,26 +35,26 @@ class AbstractUser(models.Model):
         abstract = True
 
 
-    username = models.OneToOneField(User,
-                                    parent_link=User.username, 
-                                    on_delete=models.PROTECT, 
-                                    primary_key=True)
+    user = models.OneToOneField(User,
+                                on_delete=models.PROTECT, 
+                                primary_key=True)
     photo = models.ImageField()
     description = models.TextField()
 
 
     def __str__(self):
-        return self.username
-
-
-class Band(AbstractUser):
-    needs_skills = models.ForeignKey(Skill, on_delete=models.CASCADE)
-    gigs = models.ForeignKey(Gig, on_delete=models.CASCADE)
+        return self.user.username
 
 
 class Artist(AbstractUser):
-    band = models.ForeignKey(Band, on_delete=models.CASCADE)
     has_skills = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    requests = models.ManyToManyField("Band", through="Request")
+
+
+class Band(AbstractUser):
+    artists = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    gigs = models.ForeignKey(Gig, on_delete=models.CASCADE)
+    needs_skills = models.ForeignKey(Skill, on_delete=models.CASCADE)
 
 
 class Request(models.Model):
@@ -53,4 +62,7 @@ class Request(models.Model):
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     accepted = models.BooleanField()
-    # TODO use this for extra fields on the many-many relationship between bands and artists
+
+
+    def __str__(self):
+        return f"{self.artist}<->{self.band}@{date}:accepted={accepted}"
