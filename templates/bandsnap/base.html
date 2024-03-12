@@ -16,38 +16,52 @@
                 this is bandsnap
             {% endblock %}
         </title>
-        <style>
-            .navbar-nav .nav-link.active {
-                border-bottom: 2px solid #007bff; /* Adjust the color as needed */
-              }
-        </style>
     </head>
     <body>
         <nav class="navbar navbar-expand-sm bg-light sticky-top">
             <div class="container-fluid">
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="navbar-brand" href="{% url 'bandsnap:index' %}">
-                            <img src="{% static 'images/logo.jpg' %}" alt="bandsnap logo" style="width:40px;" class="rounded-pill">
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_link == 'index' %}active{% endif %}" href="{% url 'bandsnap:index' %}">Index</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_link == 'about' %}active{% endif %}" href="{% url 'bandsnap:about' %}">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_link == 'search' %}active{% endif %}" href="{% url 'bandsnap:search' %}">search</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_link == 'login' %}active{% endif %}" href="{% url 'bandsnap:login' %}">login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {% if active_link == 'signup' %}active{% endif %}" href="{% url 'bandsnap:signup' %}">signup</a>
-                    </li>
-                </ul>
+                <a class="navbar-brand" href="{% url 'bandsnap:index' %}">
+                    <img src="{% static 'images/logo.jpg' %}" alt="bandsnap logo" style="width:40px;" class="rounded-pill" id="bandsnap-logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse bg-light justify-content-end" id="collapsibleNavbar">
+                    <ul class="navbar-nav nav-tabs me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_link == 'index' %}active{% endif %}" href="{% url 'bandsnap:index' %}">Index</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_link == 'about' %}active{% endif %}" href="{% url 'bandsnap:about' %}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if active_link == 'search' %}active{% endif %}" href="{% url 'bandsnap:search' %}">Search</a>
+                        </li>
+                    </ul>
+                    <div class="right-nav ml-auto">
+                        
+                        <ul class="navbar-nav">
+                            <!--add user authentication here-->
+                            {% if False %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if active_link == 'profile' %}active{% endif %}" href="#">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if active_link == 'logout' %}active{% endif %}" href="#">Log Out</a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link {% if active_link == 'login' %}active{% endif %}" href="{% url 'bandsnap:login' %}">Log In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if active_link == 'signup' %}active{% endif %}" href="{% url 'bandsnap:signup' %}">Sign Up</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
             </div>
+            
         </nav>
     </ul>
         <div>
