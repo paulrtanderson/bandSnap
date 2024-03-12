@@ -1,11 +1,16 @@
 {% extends 'bandsnap/base.html' %}
 {% load static %}
+
 {% block title_block %}
-login
+    Login
 {% endblock %}
+
 {% block body_block %}
-    <h1>bandsnap</h1>
-    <div>
-        here is the login page. <br />
-    </div>
-{% endblock  %}
+    <h1>Login to bandsnap</h1>
+    <form id="login_form" method="post" action="{% url 'bandsnap:login' %}">
+        {% csrf_token %}
+        Username: <input type="text" name="username" value="" size="50" /><br />
+        Password: <input type="password" name="password" value="" size="50" /><br />
+        <input type="submit" value="submit" />
+    </form>
+{% endblock %}

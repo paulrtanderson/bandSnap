@@ -1,14 +1,20 @@
 {% extends 'bandsnap/base.html' %}
 {% load static %}
+
 {% block title_block %}
-Home
+    Home
 {% endblock %}
+
 {% block body_block %}
     <h1>bandsnap</h1>
     <div>
         here is the home page. <br />
     </div>
-    <p>test template</p>
+    {% if user.is_authenticated %}
+        howdy {{ user.username }}!
+    {% else %}
+        test template
+    {% endif %}
     <img src="{% static 'images/logo.jpg' %}" alt="bandsnap logo" />
     <img src="{{ MEDIA_URL }}logo.jpg" alt="another bandsnap logo" />
-{% endblock  %}
+{% endblock %}
