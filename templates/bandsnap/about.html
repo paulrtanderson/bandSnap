@@ -1,11 +1,18 @@
 {% extends 'bandsnap/base.html' %}
 {% load static %}
+
 {% block title_block %}
-About
+    About
 {% endblock %}
+
 {% block body_block %}
-    <h1>bandsnap</h1>
-    <div>
-        here is the About page. <br />
-    </div>
-{% endblock  %}
+    <h1>About bandsnap</h1>
+    <p>Welcome to bandsnap, your ultimate platform for connecting artists, bands, and gig organizers!</p>
+    <p>At bandsnap, we strive to create a vibrant community where musicians and organizers can come together to share their passion for music.</p>
+    <p>For any technical issues or inquiries, please feel free to contact us:</p>
+    <ul>
+        <li>Email: support@bandsnap.com</li>
+        <li>Phone: +1 (505) 123-4067</li>
+    </ul>
+    <p><a href="{% url 'bandsnap:index' %}">Back to Homepage</a></p>
+{% endblock %}
