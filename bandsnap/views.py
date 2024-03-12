@@ -4,6 +4,8 @@ from bandsnap.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
 def index(request):
     context_dict = {}
@@ -41,7 +43,7 @@ def signup(request):
     context_dict['registered'] = registered
     
     return render(request, 'bandsnap/signup.html', context_dict)
-def login(request):
+def user_login(request):
     #context_dict = {}
     #return render(request,'bandsnap/login.html',context=context_dict)
     if request.method == 'POST':
@@ -67,5 +69,13 @@ def search(request):
 def about(request):
     context_dict = {}
     return render(request,'bandsnap/about.html',context=context_dict)
+@login_required
+def restricted(request):
+    return HttpResponse("Since you're logged in, you can see this text!")
+
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('bandsnap:index'))
 
 

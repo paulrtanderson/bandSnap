@@ -13,8 +13,8 @@
     <body>
         <ul>
         {% if user.is_authenticated %}
-            <li><a href="{% url 'rango:restricted' %}">Restricted Page</a></li>
-            <li><a href="{% url 'rango:logout' %}">Logout</a></li>
+            <li><a href="{% url 'bandsnap:restricted' %}">Restricted Page</a></li>
+            <li><a href="{% url 'bandsnap:logout' %}">Logout</a></li>
         {% else %}
             <li><a href="{% url 'bandsnap:login' %}">login</a></li>
             <li><a href="{% url 'bandsnap:signup' %}">signup</a></li>
