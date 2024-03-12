@@ -44,6 +44,12 @@ class AbstractUser(models.Model):
 
     def __str__(self):
         return self.user.username
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    website = models.URLField(blank=True)
+    picture = models.ImageField(upload_to='profile_images', blank=True)
+    def __str__(self):
+        return self.user.username
 
 
 class Artist(AbstractUser):
@@ -62,6 +68,7 @@ class Request(models.Model):
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
     accepted = models.BooleanField()
+
 
 
     def __str__(self):

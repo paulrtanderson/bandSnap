@@ -1,11 +1,26 @@
 {% extends 'bandsnap/base.html' %}
 {% load static %}
+
 {% block title_block %}
-signup
+    Signup
 {% endblock %}
+
 {% block body_block %}
-    <h1>bandsnap</h1>
-    <div>
-        here is the signup page. <br />
-    </div>
-{% endblock  %}
+    <h1>Signup for bandsnap</h1>
+    {% if registered %}
+        bandsnap says: <strong>thank you for signing up!</strong>
+        <a href="{% url 'bandsnap:index' %}">Return to the homepage.</a><br />
+    {% else %}
+        <strong>signup here!</strong><br />
+        <form id="user_form" method="post" action="{% url 'bandsnap:signup' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+
+            
+            <input type="submit" name="submit" value="Signup" />
+        </form>
+    {% endif %}
+{% endblock %}
