@@ -6,10 +6,15 @@ from django.urls import reverse
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from datetime import datetime
 
 def index(request):
     context_dict = {}
-    return render(request,'bandsnap/index.html',context=context_dict)
+    request.session.set_test_cookie()
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
+    response = render(request,'bandsnap/index.html',context=context_dict)
+    return response
 
 def signup(request):
     context_dict = {}
@@ -68,7 +73,27 @@ def search(request):
 
 def about(request):
     context_dict = {}
-    return render(request,'bandsnap/about.html',context=context_dict)
+    request.session.set_test_cookie()
+    visitor_cookie_handler(request)
+    context_dict['visits'] = request.session['visits']
+    response = render(request,'bandsnap/about.html',context=context_dict)
+    return response
+
+def get_server_side_cookie(request, cookie, default_val=None):
+    val = request.session.get(cookie)
+    if not val:
+        val = default_val
+    return val
+def visitor_cookie_handler(request):
+    visits = int(request.COOKIES.get('visits', '1'))
+    last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
+    if (datetime.now() - last_visit_time).days > 0:
+        visits = visits + 1
+        request.session['last_visit'] = str(datetime.now())
+    else:
+        request.session['last_visit'] = last_visit_cookie
+    request.session['visits'] = visits
 @login_required
 def restricted(request):
     return HttpResponse("Since you're logged in, you can see this text!")
