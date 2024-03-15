@@ -68,7 +68,7 @@ def user_login(request):
         return render(request, 'bandsnap/login.html')
 
 def search(request):
-    context_dict = {}
+    context_dict = {'active_link': 'search'}
     return render(request,'bandsnap/search.html',context=context_dict)
 
 def about(request):
