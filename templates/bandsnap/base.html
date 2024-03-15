@@ -12,11 +12,17 @@
     </head>
     <body>
         <ul>
+        {% if user.is_authenticated %}
+            <li><a href="{% url 'bandsnap:restricted' %}">Restricted Page</a></li>
+            <li><a href="{% url 'bandsnap:logout' %}">Logout</a></li>
+            <li><a href="{% url 'bandsnap:user_profile' %}" style="text-decoration: none;"></a>View Profile</li>
+        {% else %}
+            <li><a href="{% url 'bandsnap:login' %}">login</a></li>
+            <li><a href="{% url 'bandsnap:signup' %}">signup</a></li>
+        {% endif %}
             <li><a href="{% url 'bandsnap:about' %}">About</a></li>
             <li><a href="{% url 'bandsnap:index' %}">Index</a></li>
             <li><a href="{% url 'bandsnap:search' %}">search</a></li>
-            <li><a href="{% url 'bandsnap:login' %}">login</a></li>
-            <li><a href="{% url 'bandsnap:signup' %}">signup</a></li>
         </ul>
     </ul>
         <div>
