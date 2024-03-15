@@ -84,6 +84,7 @@ def get_server_side_cookie(request, cookie, default_val=None):
     if not val:
         val = default_val
     return val
+
 def visitor_cookie_handler(request):
     visits = int(request.COOKIES.get('visits', '1'))
     last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
@@ -94,6 +95,7 @@ def visitor_cookie_handler(request):
     else:
         request.session['last_visit'] = last_visit_cookie
     request.session['visits'] = visits
+    
 @login_required
 def restricted(request):
     return HttpResponse("Since you're logged in, you can see this text!")
@@ -102,5 +104,11 @@ def restricted(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('bandsnap:index'))
+
+@login_required
+def user_profile(request):
+    return render(request, 'bandsnap/user_profile.py')
+
+
 
 
