@@ -17,7 +17,7 @@
     {% if user.is_authenticated %}
         <div style="position: absolute; top: 10px; right: 10px;">
             <a href="{% url 'user_profile' %}" style="text-decoration: none;">
-                <button>View Profile</button>
+                <button type="submit">View Profile</button>
             </a>
         </div>
     {% endif %}

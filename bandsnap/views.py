@@ -103,4 +103,8 @@ def user_logout(request):
     logout(request)
     return redirect(reverse('bandsnap:index'))
 
+@login_required
+def user_profile(request):
+    return render(request, 'bandsnap/user_profile.py')
+
 
