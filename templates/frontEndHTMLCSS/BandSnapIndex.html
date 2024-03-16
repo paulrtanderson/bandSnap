@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<link rel="stylesheet" href="mystyle.css">
+		<title>Index</title>
+	</head>
+	
+	<body>
+	
+		<div id="SearchIndex">
+			<img class="LargeLogo" src="BandSnapLogo.png" alt="BandSnap Logo">
+			<form id="user-form" method="post" action="">
+				<input type="text" size="50" placeholder="Enter a query..." name="query" id="query" />
+				<button type="submit" name="submit">Search</button>
+				<div>
+					<p>I'm looking for:</p>
+				</div>
+				<div>
+					<input type="radio" id="artists" name="selection" value="ARTISTS">
+					<label for="artists">ARTISTS</label><br>
+					<input type="radio" id="bands" name="selection" value="BANDS">
+					<label for="bands">BANDS</label><br>
+					<input type="radio" id="gigs" name="selection" value="GIGS">
+		    		<label for="gigs">GIGS</label>
+				</div>
+			</form>
+		</div>
+		
+		<div id="AccountIndex">
+			<button id="AccountButtons" onclick="logIn()">Log In</button><br>
+			<button id="AccountButtons" onclick="signUp()">Sign Up</button>
+		</div>
+		
+	</body>
+
+</html>
