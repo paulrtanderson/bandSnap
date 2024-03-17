@@ -46,10 +46,9 @@ class AbstractUser(models.Model):
         return self.user.username
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-    def __str__(self):
-        return self.user.username
+    profile_photo = models.ImageField(upload_to='profile_photos/', blank=True)
+    description = models.TextField(blank=True)
+    skills = models.ManyToManyField('Skill', blank=True)
 
 
 class Artist(AbstractUser):
