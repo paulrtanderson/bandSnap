@@ -9,6 +9,7 @@ from django.contrib.auth import logout
 from datetime import datetime
 from bandsnap.models import Artist
 from django.template.loader import render_to_string
+from django.utils.html import escape
 
 def index(request):
     context_dict = {}
@@ -82,11 +83,14 @@ def artist_search(request):
         profiles = Artist.objects.all()
     data = []
     for profile in profiles:
+        skills = profile.skills.all()
+        for skill in skills:
+            skill = escape(skill)
         template = render_to_string('bandsnap/artists-result.html', {
-            'profile_photo': profile.photo.url,
-            'name': profile.user.get_full_name(),
-            'description': profile.description,
-            'skills': profile.skills.all()
+            'profile_photo': escape(profile.photo.url),
+            'name': escape(profile.user.get_full_name()),
+            'description': escape(profile.description),
+            'skills': skills
         })
         data.append(template)
     return JsonResponse(data, safe=False)
