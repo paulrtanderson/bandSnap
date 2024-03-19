@@ -38,7 +38,7 @@ class AbstractUser(models.Model):
     user = models.OneToOneField(User,
                                 on_delete=models.PROTECT, 
                                 primary_key=True)
-    photo = models.ImageField()
+    photo = models.ImageField(upload_to='profile_images', blank=True)
     description = models.TextField()
 
 

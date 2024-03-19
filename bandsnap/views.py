@@ -75,22 +75,20 @@ def user_login(request):
 
     
 def artist_search(request):
-    print("test")
     query = request.GET.get('query')
     if query:
         profiles = Artist.objects.filter(user__first_name__icontains=query)
     else:
         profiles = Artist.objects.all()
-    print(len(profiles))
     data = []
     for profile in profiles:
         template = render_to_string('bandsnap/artists-result.html', {
             'profile_photo': profile.photo.url,
             'name': profile.user.get_full_name(),
             'description': profile.description,
+            'skills': profile.skills.all()
         })
         data.append(template)
-    
     return JsonResponse(data, safe=False)
 
 
