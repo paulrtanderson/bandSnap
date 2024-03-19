@@ -7,6 +7,8 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
+from bandsnap.models import Artist
+from django.template.loader import render_to_string
 
 def index(request):
     context_dict = {}
@@ -70,14 +72,27 @@ def user_login(request):
     else:
         return render(request, 'bandsnap/login.html',context=context_dict)
     
-def search_request(request):
-    if request.method == 'GET':
-        query = request.GET.get('query', '')
-        response_data = {'results': query}
-        print(query)
-        return JsonResponse(response_data)
+
+    
+def artist_search(request):
+    print("test")
+    query = request.GET.get('query')
+    if query:
+        profiles = Artist.objects.filter(user__first_name__icontains=query)
     else:
-        return JsonResponse({'error':'something went wrong'})
+        profiles = Artist.objects.all()
+    print(len(profiles))
+    data = []
+    for profile in profiles:
+        template = render_to_string('bandsnap/artists-result.html', {
+            'profile_photo': profile.photo.url,
+            'name': profile.user.get_full_name(),
+            'description': profile.description,
+        })
+        data.append(template)
+    
+    return JsonResponse(data, safe=False)
+
 
 def search(request):
     context_dict = {'active_link': 'search'}

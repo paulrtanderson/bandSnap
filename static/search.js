@@ -1,16 +1,16 @@
 function search() {
-    var query = document.getElementById('searchInput').value;
-
+    var query = $('#searchInput').val();
     $.ajax({
-        type: 'GET',
-        url: '/bandsnap/search-request/',
-        data: {query:query},
-        success: function(response){
-            var searchResultsElement = document.getElementById('searchResults');
-            searchResultsElement.innerHTML = response.results;
+        url: '/bandsnap/artist-search/',
+        data: {
+            'query': query
         },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', status, error);
+        dataType: 'json',
+        success: function(data) {
+            $('#searchResults').empty();
+            for (var i = 0; i < data.length; i++) {
+                $('#searchResults').append(data[i]);
+            }
         }
     });
 }
