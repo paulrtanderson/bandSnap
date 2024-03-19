@@ -65,4 +65,4 @@ class Request(models.Model):
 
 
     def __str__(self):
-        return f"{self.artist}<->{self.band}@{date}:accepted={accepted}"
+        return f"{self.artist}<->{self.band}@{self.date}:accepted={self.accepted}"
