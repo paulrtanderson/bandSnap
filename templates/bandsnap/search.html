@@ -6,10 +6,10 @@ Search
 {% block body_block %}
     <div class="container p-5 my-5 border">
         here is the search page. <br />
-        <form class="d-flex">
-            <input class="form-control" type="text" placeholder="Search">
+        <div class="d-flex">
+            <input id="searchInput" class="form-control" type="text" placeholder="Search" oninput="search()">
             <button class="btn btn-primary" type="button">Search</button>
-        </form>
+        </div>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs nav-fill">
         <li class="nav-item">
@@ -22,7 +22,7 @@ Search
             <a class="nav-link" data-bs-toggle="tab" href="#gigs">Gigs</a>
         </li>
         </ul>
-
+        <div id="searchResults"></div>
         <!-- Tab panes -->
         <div class="tab-content">
         <div class="tab-pane container active" id="artists">artists content</div>
@@ -30,4 +30,5 @@ Search
         <div class="tab-pane container fade" id="gigs">gigs</div>
         </div>
     </div>
+    <script src="{% static "search.js" %}"></script>
 {% endblock  %}

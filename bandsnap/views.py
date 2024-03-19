@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from bandsnap.forms import UserForm, UserProfileForm
 from django.contrib.auth import authenticate, login
 from django.urls import reverse
@@ -69,6 +69,15 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:
         return render(request, 'bandsnap/login.html',context=context_dict)
+    
+def search_request(request):
+    if request.method == 'GET':
+        query = request.GET.get('query', '')
+        response_data = {'results': query}
+        print(query)
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error':'something went wrong'})
 
 def search(request):
     context_dict = {'active_link': 'search'}
