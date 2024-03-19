@@ -13,6 +13,7 @@ def index(request):
     request.session.set_test_cookie()
     visitor_cookie_handler(request)
     context_dict['visits'] = request.session['visits']
+    context_dict['active_link'] = "index"
     response = render(request,'bandsnap/index.html',context=context_dict)
     return response
 
@@ -46,10 +47,12 @@ def signup(request):
     context_dict['user_form'] = user_form
     context_dict['profile_form'] = profile_form
     context_dict['registered'] = registered
+    context_dict['active_link'] = "signup"
     
     return render(request, 'bandsnap/signup.html', context_dict)
 def user_login(request):
-    #context_dict = {}
+    context_dict = {}
+    context_dict['active_link'] = "login"
     #return render(request,'bandsnap/login.html',context=context_dict)
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -65,7 +68,7 @@ def user_login(request):
             print(f"Invalid login details: {username}, {password}")
             return HttpResponse("Invalid login details supplied.")
     else:
-        return render(request, 'bandsnap/login.html')
+        return render(request, 'bandsnap/login.html',context=context_dict)
 
 def search(request):
     context_dict = {'active_link': 'search'}
@@ -76,6 +79,7 @@ def about(request):
     request.session.set_test_cookie()
     visitor_cookie_handler(request)
     context_dict['visits'] = request.session['visits']
+    context_dict['active_link'] = "about"
     response = render(request,'bandsnap/about.html',context=context_dict)
     return response
 
