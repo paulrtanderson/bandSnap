@@ -25,11 +25,15 @@ Search
     
         <!-- Tab panes -->
         <div class="tab-content">
-        <div class="tab-pane container active" id="artists">
-            <div id="searchResults"></div>
-        </div>
-        <div class="tab-pane container fade" id="bands">.bsfnd.</div>
-        <div class="tab-pane container fade" id="gigs">gigs</div>
+            <div class="tab-pane container fade active" id="artists">
+                <div id="searchResultsArtist"></div>
+            </div>
+            <div class="tab-pane container fade" id="bands">
+                <div id="searchResultsBand"></div>
+            </div>
+            <div class="tab-pane container fade" id="gigs">
+                <div id="searchResultsGig"></div>
+            </div>
         </div>
     </div>
     <script src="{% static "search.js" %}"></script>

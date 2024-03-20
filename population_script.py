@@ -5,7 +5,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "wad_group_project_bandsnap.settings")
 django.setup()
 
-from bandsnap.models import Artist, Skill
+from bandsnap.models import Artist, Skill,Gig,Band
 # Now you can access Django settings
 from django.conf import settings
 from pathlib import Path
@@ -27,6 +27,42 @@ def populate():
     skills = ["Singing", "Guitar", "Drums", "Bass", "Keyboard"]
     for skill_name in skills:
         skill, created = Skill.objects.get_or_create(name=skill_name)
+
+    #create bands
+    bands_data = [
+        {
+            "username": "band1",
+            "password": "password1",
+            "first_name":"The backburners",
+            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "description": "Description of band x",
+            "needs_skills": ["Singing", "Guitar"]
+        },
+        {
+            "username": "band2",
+            "password": "password1",
+            "first_name":"The best",
+            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "description": "Description of band x",
+            "needs_skills": ["Bass", "Guitar"]
+        },
+        {
+            "username": "band3",
+            "password": "password1",
+            "first_name":"The lucky ones",
+            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "description": "Description of band x",
+            "needs_skills": ["Singing", "Guitar"]
+        },
+        {
+            "username": "band4",
+            "password": "password1",
+            "first_name":"The nine",
+            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "description": "Description of band x",
+            "needs_skills": ["Singing", "Guitar"]
+        },
+    ]
 
     # Create artists
     artists_data = [
@@ -70,6 +106,12 @@ def populate():
     ]
 
     for artist_data in artists_data:
+        add_artist(artist_data)
+
+    for band_data in bands_data:
+        add_band(band_data)
+
+def add_artist(artist_data):
         user, created = User.objects.get_or_create(username=artist_data["username"])
         if created:
             user.set_password(artist_data["password"])
@@ -89,6 +131,28 @@ def populate():
             artist.skills.add(skill)
 
         artist.save()
+
+
+def add_band(band_data):
+        user, created = User.objects.get_or_create(username=band_data["username"])
+        if created:
+            user.set_password(band_data["password"])
+            user.save()
+
+        user.first_name = band_data["first_name"]
+        user.save()
+        band, created = Band.objects.get_or_create(user=user)
+        band.description = band_data["description"]
+        band.photo = band_data["photo_path"]
+        
+
+        # Assign skills to the artist
+        for skill_name in band_data["needs_skills"]:
+            skill = Skill.objects.get(name=skill_name)
+            band.needs_skills.add(skill)
+
+        band.save()
+
 
 if __name__ == '__main__':
     print("Populating database with artists...")

@@ -1,17 +1,15 @@
-from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
-from bandsnap.forms import UserForm, UserProfileForm
-from django.contrib.auth import authenticate, login
-from django.urls import reverse
-from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
 from datetime import datetime
-from bandsnap.models import Artist
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.http import HttpResponse, JsonResponse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
 from django.utils.html import escape
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
+from bandsnap.models import Artist, Band, Gig
+from bandsnap.forms import UserForm, UserProfileForm
 
 def index(request):
     context_dict = {}
@@ -81,13 +79,18 @@ def artist_search(request):
     query = request.GET.get('query')
     if query:
         user_profiles_with_full_name = Artist.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
-        profiles = user_profiles_with_full_name.filter( Q(full_name__icontains=query) |
+        artists = user_profiles_with_full_name.filter(  Q(full_name__icontains=query) |
                                                         Q(description__icontains=query) |
                                                         Q(skills__name__icontains=query)).distinct()
+        
+        bands = Band.objects.filter(Q(user__first_name__icontains=query) |
+                            Q(description__icontains=query) |
+                            Q(needs_skills__name__icontains=query)).distinct()
     else:
-        profiles = Artist.objects.all()
-    data = []
-    for profile in profiles:
+        artists = Artist.objects.all()
+        bands = Band.objects.all()
+    artists_data = []
+    for profile in artists:
         skills = profile.skills.all()
         for skill in skills:
             skill = escape(skill)
@@ -97,9 +100,23 @@ def artist_search(request):
             'description': escape(profile.description),
             'skills': skills
         })
-        data.append(template)
-    print(len(data))
-    return JsonResponse(data, safe=False)
+        artists_data.append(template)
+    bands_data = []
+    for profile in bands:
+        skills = profile.needs_skills.all()
+        for skill in skills:
+            skill = escape(skill)
+        template = render_to_string('bandsnap/band-result.html', {
+            'profile_photo': escape(profile.photo.url),
+            'name': escape(profile.user.first_name),
+            'description': escape(profile.description),
+            'skills': skills
+        })
+        bands_data.append(template)
+    print(len(bands_data))
+    return_data = {"Artist":artists_data,
+                   "Band":bands_data}
+    return JsonResponse(return_data, safe=False)
 
 
 def search(request):

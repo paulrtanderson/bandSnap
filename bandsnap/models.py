@@ -12,11 +12,7 @@ class Skill(models.Model):
         return self.name
 
 
-class Gig(models.Model):
-    name = models.CharField(max_length=200, unique=True)
-    date = models.DateField()
-    venue_address = models.CharField(max_length=200)
-    description = models.TextField()
+
 
 
     def __str__(self):
@@ -54,22 +50,28 @@ class UserProfile(models.Model):
 
 class Artist(AbstractUser):
     skills = models.ManyToManyField(Skill)
-    requests = models.ManyToManyField("Band", through="Request")
 
 
 class Band(AbstractUser):
-    artists = models.ForeignKey(Artist, on_delete=models.CASCADE)
-    gigs = models.ForeignKey(Gig, on_delete=models.CASCADE)
-    needs_skills = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    artists = models.ManyToManyField(Artist, through='Request')
+    needs_skills = models.ManyToManyField(Skill)
 
+class Gig(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+    date = models.DateField()
+    venue_address = models.CharField(max_length=200)
+    description = models.TextField()
+    band = models.ForeignKey(Band, on_delete=models.CASCADE, related_name='gigs',default=None)
 
 class Request(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
     band = models.ForeignKey(Band, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
-    accepted = models.BooleanField()
+    accepted = models.BooleanField(default=False)
+    message = models.TextField(blank=True)
 
-
+    class Meta:
+        unique_together = ('artist', 'band')
 
     def __str__(self):
         return f"{self.artist}<->{self.band}@{self.date}:accepted={self.accepted}"
