@@ -1,14 +1,35 @@
 {% extends 'bandsnap/base.html' %}
 {% load static %}
+
 {% block title_block %}
-Home
+    Home
 {% endblock %}
+
 {% block body_block %}
-    <h1>bandsnap</h1>
-    <div>
-        here is the home page. <br />
+    <div class="SearchForPeople">
+
+        <form id="user-form" method="post" action="">
+
+            <input type="text" size="50" placeholder="Enter a query..." name="query" id="query" />
+            <button type="submit" name="submit">Search</button>
+
+            <div>
+                <p>I'm looking for:</p>
+            </div>
+
+            <div>
+                <!-- Form content in here -->
+                {% for x in y do z %}
+
+                {% end for %}
+            </div>
+
+        </form>
     </div>
-    <p>test template</p>
-    <img src="{% static 'images/logo.jpg' %}" alt="bandsnap logo" />
-    <img src="{{ MEDIA_URL }}logo.jpg" alt="another bandsnap logo" />
-{% endblock  %}
+
+    <!-- Maybe move buttons into base.html header, if !user.is_authenticated then display -->
+    <div class="LoginOrSignup">
+        <button class="AccountButtons" onclick="logIn()">Log In</button><br>
+        <button class="AccountButtons" onclick="signUp()">Sign Up</button>
+    </div>
+{% endblock %}

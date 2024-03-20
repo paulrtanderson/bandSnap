@@ -1,11 +1,62 @@
 {% extends 'bandsnap/base.html' %}
 {% load static %}
-{% block title_block %}
-search
-{% endblock %}
-{% block body_block %}
-    <h1>bandsnap</h1>
-    <div>
-        here is the search page. <br />
-    </div>
-{% endblock  %}
+
+    {% block title_block %}
+        Search
+    {% endblock %}
+
+
+    
+    {% block body_block %}
+        <div class="SmallHeader">
+        
+            <div id="AccountIndex">
+                <button id="AccountButtons" onclick="logIn()">Log In</button><br>
+                <button id="AccountButtons" onclick="signUp()">Sign Up</button>
+            </div>
+        
+        </div>
+        
+        <div class="SearchAndDisplay">
+            <div class="SearchBar">
+                <!-- Potentially replace with external form?-->
+
+                <input type="text" size="50" placeholder="Enter a query..." name="query" id="query" />
+                <button type="submit" name="submit">Search!</button>
+            </div>
+            
+            <div class="DisplayHeading">
+                <p id="SearchOptions">Artists</p>
+                <p id="SearchOptions">Bands</p>
+                <p id="SearchOptions">Gigs</p>
+            </div>
+            
+            <!-- This is a fixed creation, will use a loop and vertical side bar to display >5 profiles -->
+            <div class="DisplaySearch">
+            
+                <div class="DisplayProfile">
+                    <div class="UserProfile">
+                        <img src="" alt="User Picture"> </img>
+                    </div>
+                
+                    <div class="NameAndAbout">
+                        <p>Forename Surname</p>
+                        <p>About me</p>
+                    </div>
+                    
+                    <div class="ProfileSkills">
+                        <p>Skills</p>
+                        <ul>
+                            <li>My</li>
+                            <li>Skills</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                {% for x in y do z%}
+
+                {% end for %}
+
+            </div>
+        </div>	
+    {% endblock  %}
