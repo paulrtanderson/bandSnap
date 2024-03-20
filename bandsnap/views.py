@@ -10,6 +10,8 @@ from datetime import datetime
 from bandsnap.models import Artist
 from django.template.loader import render_to_string
 from django.utils.html import escape
+from django.db.models import F, Value
+from django.db.models.functions import Concat
 
 def index(request):
     context_dict = {}
@@ -78,7 +80,8 @@ def user_login(request):
 def artist_search(request):
     query = request.GET.get('query')
     if query:
-        profiles = Artist.objects.filter(user__first_name__icontains=query)
+        user_profiles_with_full_name = Artist.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
+        profiles = user_profiles_with_full_name.filter(full_name__icontains=query)
     else:
         profiles = Artist.objects.all()
     data = []
@@ -93,6 +96,7 @@ def artist_search(request):
             'skills': skills
         })
         data.append(template)
+    print(len(data))
     return JsonResponse(data, safe=False)
 
 
