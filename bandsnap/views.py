@@ -78,17 +78,24 @@ def user_login(request):
 def artist_search(request):
     query = request.GET.get('query')
     if query:
-        user_profiles_with_full_name = Artist.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
-        artists = user_profiles_with_full_name.filter(  Q(full_name__icontains=query) |
-                                                        Q(description__icontains=query) |
-                                                        Q(skills__name__icontains=query)).distinct()
+        artist_with_full_name = Artist.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
+        artists_by_name = artist_with_full_name.filter(full_name__icontains=query)
+        artists_by_desc = Artist.objects.filter(description__icontains=query)
+        artists_by_skills = Artist.objects.filter(skills__name__icontains=query)
+        artists = artists_by_name | artists_by_desc | artists_by_skills
         
         bands = Band.objects.filter(Q(user__first_name__icontains=query) |
-                            Q(description__icontains=query) |
-                            Q(needs_skills__name__icontains=query)).distinct()
+                                    Q(description__icontains=query) |
+                                    Q(needs_skills__name__icontains=query)).distinct()
+        gigs = Gig.objects.filter(  Q(name__icontains=query) |
+                                    Q(description__icontains=query) |
+                                    Q(band__user__first_name__icontains=query) |
+                                    Q(band__artists__in=artists_by_name) |
+                                    Q(venue_address__icontains=query)).distinct()
     else:
         artists = Artist.objects.all()
         bands = Band.objects.all()
+        gigs = Gig.objects.all()
     artists_data = []
     for profile in artists:
         skills = profile.skills.all()
@@ -113,9 +120,25 @@ def artist_search(request):
             'skills': skills
         })
         bands_data.append(template)
-    print(len(bands_data))
+
+    gigs_data = []
+    for gig in gigs:
+        band  = gig.band
+        artists = band.artists.all()
+        artist_names = [escape(artist.user.get_full_name()) for artist in artists]
+        print(len(artists))
+        template = render_to_string('bandsnap/gigs-result.html', {
+            'profile_photo': escape(gig.band.photo.url),
+            'name': escape(gig.name),
+            'description': escape(gig.description),
+            'artists': artist_names,
+            'address': escape(gig.venue_address)
+        })
+        gigs_data.append(template)
+
     return_data = {"Artist":artists_data,
-                   "Band":bands_data}
+                   "Band":bands_data,
+                   "Gig":gigs_data}
     return JsonResponse(return_data, safe=False)
 
 

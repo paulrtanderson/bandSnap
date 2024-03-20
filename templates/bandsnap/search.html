@@ -11,7 +11,7 @@ Search
             <button class="btn btn-primary" type="button">Search</button>
         </div>
         <!-- Nav tabs -->
-        <ul class="nav nav-tabs nav-fill">
+        <ul class="nav nav-tabs nav-fill mb-5">
         <li class="nav-item">
             <a class="nav-link active" data-bs-toggle="tab" href="#artists">Artists</a>
         </li>
@@ -25,7 +25,7 @@ Search
     
         <!-- Tab panes -->
         <div class="tab-content">
-            <div class="tab-pane container fade active" id="artists">
+            <div class="tab-pane container fade active show" id="artists">
                 <div id="searchResultsArtist"></div>
             </div>
             <div class="tab-pane container fade" id="bands">
@@ -36,5 +36,7 @@ Search
             </div>
         </div>
     </div>
+
+    
     <script src="{% static "search.js" %}"></script>
 {% endblock  %}

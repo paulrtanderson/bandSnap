@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="row align-items-center border rounded p-3 mb-3 flex-column flex-sm-row">
+      <div class="col-auto mb-3 mb-sm-0">
+          <img src="{{ profile_photo }}" class="img-fluid rounded-circle" alt="Person" style="width: 150px;">
+      </div>
+      <div class="col">
+          <h5 class="card-title">{{ name }}</h5>
+          <p class="card-text">{{ description }}</p>
+      </div>
+      <div class="col">
+          <h5 class="card-title">Artists:</h5>
+          <ul>
+            {% for artist in artists %}
+            <li>{{ artist }}</li>
+            {% endfor %}
+          </ul>
+      </div>
+      <div class="col">
+        <h5 class="card-title">Venue Address:</h5>
+        <p class="card-text">{{ address }}</p>
+    </div>
+  </div>
+</div>

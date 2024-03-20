@@ -1,19 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
-
-
 class Skill(models.Model):
     name = models.CharField(max_length=200, unique=True)
-
-
-    def __str__(self):
-        return self.name
-
-
-
-
 
     def __str__(self):
         return self.name
@@ -25,11 +14,8 @@ class Skill(models.Model):
 
 # Artist and Band inherit from this model
 class AbstractUser(models.Model):
-
-
     class Meta:
         abstract = True
-
 
     user = models.OneToOneField(User,
                                 on_delete=models.PROTECT, 
@@ -37,13 +23,15 @@ class AbstractUser(models.Model):
     photo = models.ImageField(upload_to='profile_images', blank=True)
     description = models.TextField()
 
-
     def __str__(self):
         return self.user.username
+    
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     website = models.URLField(blank=True)
     picture = models.ImageField(upload_to='profile_images', blank=True)
+
     def __str__(self):
         return self.user.username
 
@@ -56,12 +44,14 @@ class Band(AbstractUser):
     artists = models.ManyToManyField(Artist, through='Request')
     needs_skills = models.ManyToManyField(Skill)
 
+
 class Gig(models.Model):
     name = models.CharField(max_length=200, unique=True)
     date = models.DateField()
     venue_address = models.CharField(max_length=200)
     description = models.TextField()
     band = models.ForeignKey(Band, on_delete=models.CASCADE, related_name='gigs',default=None)
+
 
 class Request(models.Model):
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
