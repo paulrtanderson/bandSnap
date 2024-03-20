@@ -103,8 +103,8 @@ def visitor_cookie_handler(request):
     
 @login_required
 def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
-
+    context_dict = {'active_link': 'restricted'}
+    return render(request, 'bandsnap/restricted.html', context_dict)
 @login_required
 def user_logout(request):
     messages.success(request, 'You have been logged out.')  # Optional: Add a logout message

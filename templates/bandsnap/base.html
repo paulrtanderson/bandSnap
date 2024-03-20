@@ -49,6 +49,9 @@
                             <li class="nav-item">
                                 <a class="nav-link {% if active_link == 'logout' %}active{% endif %}" href="{% url 'bandsnap:logout' %}">Log Out</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link {% if active_link == 'restricted' %}active{% endif %}" href="{% url 'bandsnap:restricted' %}">Access</a>
+                            </li>
                             {% else %}
                             <li class="nav-item">
                                 <a class="nav-link {% if active_link == 'login' %}active{% endif %}" href="{% url 'bandsnap:login' %}">Log In</a>
