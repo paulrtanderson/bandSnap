@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
+from django.contrib import messages
 
 def index(request):
     context_dict = {}
@@ -106,12 +107,15 @@ def restricted(request):
 
 @login_required
 def user_logout(request):
+    messages.success(request, 'You have been logged out.')  # Optional: Add a logout message
+    request.session['active_link'] = 'logout'
     logout(request)
     return redirect(reverse('bandsnap:index'))
 
 @login_required
 def user_profile(request):
-    return render(request, 'bandsnap/user_profile.py')
+    context_dict = {'active_link': 'profile'}
+    return render(request, 'bandsnap/user_profile.html', context=context_dict)
 
 
 
