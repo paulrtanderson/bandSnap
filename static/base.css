@@ -10,3 +10,6 @@ nav a.navbar-brand #bandsnap-logo{
     width:200px;
     max-width: 150px;
 }
+.custom-card {
+    min-height: 200px;
+}

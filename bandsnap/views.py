@@ -96,11 +96,10 @@ def artist_search(request):
         artists = Artist.objects.all()
         bands = Band.objects.all()
         gigs = Gig.objects.all()
+        
     artists_data = []
     for profile in artists:
-        skills = profile.skills.all()
-        for skill in skills:
-            skill = escape(skill)
+        skills = [escape(skill) for skill in profile.skills.all()]
         template = render_to_string('bandsnap/artists-result.html', {
             'profile_photo': escape(profile.photo.url),
             'name': escape(profile.user.get_full_name()),
@@ -110,9 +109,7 @@ def artist_search(request):
         artists_data.append(template)
     bands_data = []
     for profile in bands:
-        skills = profile.needs_skills.all()
-        for skill in skills:
-            skill = escape(skill)
+        skills = [escape(skill) for skill in profile.needs_skills.all()]
         template = render_to_string('bandsnap/band-result.html', {
             'profile_photo': escape(profile.photo.url),
             'name': escape(profile.user.first_name),
@@ -124,11 +121,11 @@ def artist_search(request):
     gigs_data = []
     for gig in gigs:
         band  = gig.band
-        artists = band.artists.all()
-        artist_names = [escape(artist.user.get_full_name()) for artist in artists]
+        artist_names = [escape(artist.user.get_full_name()) for artist in band.artists.all()]
         print(len(artists))
         template = render_to_string('bandsnap/gigs-result.html', {
             'profile_photo': escape(gig.band.photo.url),
+            'bandname': escape(band.user.first_name),
             'name': escape(gig.name),
             'description': escape(gig.description),
             'artists': artist_names,
