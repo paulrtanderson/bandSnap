@@ -52,7 +52,7 @@ class UserProfile(models.Model):
 
 
 class Artist(AbstractUser):
-    has_skills = models.ForeignKey(Skill, on_delete=models.CASCADE)
+    has_skills = models.ForeignKey(Skill, on_delete=models.CASCADE, blank=True, null=True )
     requests = models.ManyToManyField("Band", through="Request")
 
 
