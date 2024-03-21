@@ -10,7 +10,6 @@ from django.db.models import Q, Value
 from django.db.models.functions import Concat
 from bandsnap.models import Artist, Band, Gig
 from bandsnap.forms import UserForm, UserProfileForm
-from django.contrib import messages
 
 def index(request):
     context_dict = {}
@@ -172,19 +171,16 @@ def visitor_cookie_handler(request):
     
 @login_required
 def restricted(request):
-    context_dict = {'active_link': 'restricted'}
-    return render(request, 'bandsnap/restricted.html', context_dict)
+    return HttpResponse("Since you're logged in, you can see this text!")
+
 @login_required
 def user_logout(request):
-    messages.success(request, 'You have been logged out.')  # Optional: Add a logout message
-    request.session['active_link'] = 'logout'
     logout(request)
     return redirect(reverse('bandsnap:index'))
 
 @login_required
 def user_profile(request):
-    context_dict = {'active_link': 'profile'}
-    return render(request, 'bandsnap/user_profile.html', context=context_dict)
+    return render(request, 'bandsnap/user_profile.py')
 
 
 

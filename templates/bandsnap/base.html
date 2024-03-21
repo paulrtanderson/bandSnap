@@ -44,13 +44,10 @@
                             <!--add user authentication here-->
                             {% if user.is_authenticated %}
                             <li class="nav-item">
-                                <a class="nav-link {% if active_link == 'profile' %}active{% endif %}" href="{% url 'bandsnap:user_profile' %}">Profile</a>
+                                <a class="nav-link {% if active_link == 'profile' %}active{% endif %}" href="#">Profile</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link {% if active_link == 'logout' %}active{% endif %}" href="{% url 'bandsnap:logout' %}">Log Out</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link {% if active_link == 'restricted' %}active{% endif %}" href="{% url 'bandsnap:restricted' %}">Access</a>
                             </li>
                             {% else %}
                             <li class="nav-item">

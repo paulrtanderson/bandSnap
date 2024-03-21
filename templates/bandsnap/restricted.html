@@ -5,29 +5,10 @@
     Restricted Page
 {% endblock %}
 
-{% block extra_css %}
-    <style>
-        .container {
-            padding: 20px;
-        }
-
-        .heading {
-            color: #333;
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-
-        .content {
-            margin-top: 20px;
-        }
-    </style>
-{% endblock %}
-
 {% block body_block %}
-    <div class="container">
-        <h1 class="heading">Restricted Page</h1>
-        <p>You are logged in!</p>
-        <p class="content"> "Welcome, {{ user.username }}! We're glad to see you again on bandsnap."</p>
-        <!-- Add more content or customize as needed -->
+    <h1>Restricted Page</h1>
+    <div>
+        You are logged in!
+        <img src="{% static 'images/logo.jpg' %}" alt="bandsnap logo" />
     </div>
 {% endblock %}
