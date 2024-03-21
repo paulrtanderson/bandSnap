@@ -27,3 +27,7 @@ function search() {
     xhttp.open("GET", "/bandsnap/artist-search/?query=" + query, true);
     xhttp.send();
 }
+function setBandUsername(bandusername){
+    var bandUsernameInput = document.getElementById('bandUsernameInput');
+        bandUsernameInput.value = bandusername;
+}
