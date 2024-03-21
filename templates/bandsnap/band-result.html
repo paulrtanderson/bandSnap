@@ -14,4 +14,38 @@
         {% endfor %}
     </ul>
 </div>
+<div class="col">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{ band_username }}modal">
+        Request to join
+    </button>
+</div>
+<div class="modal fade" id="{{ band_username }}modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+  
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Join {{ name }}</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+  
+        <!-- Modal body -->
+        <div class="modal-body">
+            <form method="post" id="{{ name }}RequestForm" action="{% url 'bandsnap:join_request' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="band_username" value="{{ band_username }}">
+                <button type="submit">Submit Request</button>
+            </form>
+        </div>
+  
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        </div>
+  
+      </div>
+    </div>
+  </div>
+  
 {% endblock %}

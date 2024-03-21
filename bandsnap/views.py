@@ -9,7 +9,7 @@ from django.utils.html import escape
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
 from bandsnap.models import Artist, Band, Gig
-from bandsnap.forms import UserForm, UserProfileForm
+from bandsnap.forms import UserForm, UserProfileForm, RequestForm
 
 def index(request):
     context_dict = {}
@@ -73,7 +73,18 @@ def user_login(request):
     else:
         return render(request, 'bandsnap/login.html',context=context_dict)
     
-
+def join_band(request):
+    query = request.POST.get('query')
+    if (query and request.method == "POST"):
+        form = RequestForm(request.POST)
+        if (form.is_valid):
+            band_username = request.POST.get('band_username')
+            band = Band.objects.get(user__username=band_username)
+            join_request = form.save(commit=False)
+            join_request.artist = request.user.artist
+            join_request.band = band
+            join_request.save()
+            return redirect(reverse("bandsnap:search"))
     
 def artist_search(request):
     query = request.GET.get('query')
@@ -114,7 +125,9 @@ def artist_search(request):
             'profile_photo': escape(profile.photo.url),
             'name': escape(profile.user.first_name),
             'description': escape(profile.description),
-            'skills': skills
+            'skills': skills,
+            'form': RequestForm(),
+            'band_username':profile.user.username
         })
         bands_data.append(template)
 
