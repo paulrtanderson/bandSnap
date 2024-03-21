@@ -180,7 +180,8 @@ def user_logout(request):
 
 @login_required
 def user_profile(request):
-    return render(request, 'bandsnap/user_profile.py')
+    context_dict = {'active_link': 'profile'}
+    return render(request, 'bandsnap/user_profile.html', context=context_dict)
 
 
 
