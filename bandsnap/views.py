@@ -9,7 +9,8 @@ from django.utils.html import escape
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
 from bandsnap.models import Artist, Band, Gig
-from bandsnap.forms import UserForm, UserProfileForm
+from bandsnap.forms import UserForm, UserProfileForm, RequestForm
+from django.contrib import messages
 
 def index(request):
     context_dict = {}
@@ -73,7 +74,29 @@ def user_login(request):
     else:
         return render(request, 'bandsnap/login.html',context=context_dict)
     
-
+def join_band(request):
+    message = ""
+    if (request.method == "POST"):
+        print("recieved")
+        form = RequestForm(request.POST)
+        if (form.is_valid):
+            band_username = request.POST.get('band_username')
+            band = Band.objects.get(user__username=band_username)
+            join_request = form.save(commit=False)
+            join_request.artist = request.user.artist
+            join_request.band = band
+            join_request.save()
+            return redirect(reverse("bandsnap:search"))
+        else:
+            print("form not valid")
+            # Collecting all form errors
+            form_errors = form.errors.get_json_data()
+            for field, errors in form_errors.items():
+                for error in errors:
+                    print(error)
+                    message += f"Error in {field}: {error['message']}" + "\n"
+    
+    return HttpResponse(message)
     
 def artist_search(request):
     query = request.GET.get('query')
@@ -114,14 +137,17 @@ def artist_search(request):
             'profile_photo': escape(profile.photo.url),
             'name': escape(profile.user.first_name),
             'description': escape(profile.description),
-            'skills': skills
+            'skills': skills,
+            'form': RequestForm(),
+            'band_username':profile.user.username
         })
         bands_data.append(template)
 
     gigs_data = []
     for gig in gigs:
         band  = gig.band
-        artist_names = [escape(artist.user.get_full_name()) for artist in band.artists.all()]
+        accepted_artists = band.artists.filter(request__accepted=True)
+        artist_names = [escape(artist.user.get_full_name()) for artist in accepted_artists]
         print(len(artists))
         template = render_to_string('bandsnap/gigs-result.html', {
             'profile_photo': escape(gig.band.photo.url),
@@ -141,6 +167,7 @@ def artist_search(request):
 
 def search(request):
     context_dict = {'active_link': 'search'}
+    context_dict['form'] = RequestForm()
     return render(request,'bandsnap/search.html',context=context_dict)
 
 def about(request):
