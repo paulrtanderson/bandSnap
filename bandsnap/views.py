@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.utils.html import escape
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
-from bandsnap.models import Artist, Band, Gig
+from bandsnap.models import Artist, Band, Gig, Request
 from bandsnap.forms import UserForm, UserProfileForm, RequestForm
 from django.contrib import messages
 
@@ -215,8 +215,35 @@ def user_logout(request):
 @login_required
 def user_profile(request):
     context_dict = {'active_link': 'profile'}
+
+    if is_artist(request.user):
+        artist = Artist.objects.filter(artist__user = request.user)
+        context_dict['userDetails'] = artist
+        context_dict['userPhoto'] = artist.photo.url
+        context_dict['userRequests'] = Request.objects.filter(artist__user = request.user)
+
+    else:
+        artist = Artist.objects.get(user=request.user)
+        context_dict['userDetails'] = Band.objects.filter(request__artist=artist, request__accepted=True)
+        context_dict['gigDetails'] = Gig.objects.filter(band = request.user.band)
+
+
     return render(request, 'bandsnap/user_profile.html', context=context_dict)
 
+def is_artist(user):
+    try:
+        artist = Artist.objects.get(user=user)
+        return True
+    except Artist.DoesNotExist:
+        return False
+    
+
+def is_band(user):
+    try:
+        band = Band.objects.get(user=user)
+        return True
+    except Band.DoesNotExist:
+        return False
 
 
 

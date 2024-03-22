@@ -1,47 +1,142 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Profile</title>
-</head>
-<body>
-    <div class="row">
-        <div class="UsersProfile">
-            <h2>Your Profile</h2>
+{% extends 'bandsnap/base.html' %}
+{% load static %}
 
-            <div class="UserInfo">
-                <div class="UserRow">
-                    <p class="UserText">Username:</p>
-                    <p class="UserData">{{ user.username }}</p>
-                </div>
-                <div class="UserRow">
-                    <p class="UserText">Profile Photo:</p>
-                    <p class="UserData">{{ profile.profile_photo }}</p>
-                </div>
-                <div class="UserRow">
-                    <p class="UserText">Description:</p>
-                    <p class="UserData">{{ profile.description }}</p>
-                </div>
-                <div class="UserRow">
-                    <p class="UserText">Skills:</p>
-                    <ul class="UserData">
-                        {% for skill in profile.skills.all %}
-                            <li>{{ skill.name }}</li>
-                        {% endfor %}
-                    </ul>
+{% block title_block %}
+    User Profile
+{% endblock %}
+
+{% block body_block %}
+    
+
+    <div class="row">
+            
+        {% if user|is_artist %}
+
+            <div class="UsersProfile">
+                <h2 style="float:left; margin-left:30px; margin-top:30px;">Your Profile</h2>
+                
+                <form id="update_details" method="post" action="{% url 'bandsnap:user_profile' %}">
+
+                    <div class="UserInfo">
+                        <div class="UserRow">
+                            <p class="UserText">Username</p>
+                            <p class="UserData">{userDetails.__str__()}</p>
+                        </div>
+                        <!--<div class="UserRow">
+                            <p class="UserText">Password</p>
+                            <a href="" class="UserData">Reset Password</a>
+                        </div>-->
+                        <div class="UserRow">
+                            <p class="UserText">Profile Photo</p>
+                            <img src="{% userPhoto %}" alt="Profile Photo" class="UserData">
+                            
+                        </div>
+                        <div class="UserRow">
+                            <p class="UserText">Description</p>
+                            <textarea class="UserData" id="AboutUser" name="AboutUser" value="{userDetails.description}" style="height:200px"></textarea>
+                        </div>
+                        <div class="UserRow">
+                            <p class="UserText">Skills</p>
+                            <ul class="UserData">
+                                {% for skill in userDetails.skills %}
+                                    <li>{{ skill }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="updated_details">Update Details</button>
+                </form>
+
+                <form id="new_skills" method="post" action="{% url 'bandsnap:new_skills' %}">
+                    <button type="submit" name="add_skills">Add Skill(s)</button>
+                </form>
+
+            </div>
+
+            <div class="UsersRequests">
+                <h2 style="float:left; margin-left:25px; margin-top:15px;">Your Requests</h2>
+                
+                <div class="DisplayRequests">
+                    {% for requests in userRequests %}
+
+                        <img class="BandLogo" src={{requests.band.photo.url}} alt="BandLogo">
+                        <div class="BandInfo">
+                            <p class="BoldBandInfo">{request.band.user.first_name}</p>
+                            <p>{request.date}</p>
+                            <p>Status: {request.accepted}</p>
+                        </div>
+
+                    {% endfor %}
                 </div>
             </div>
-        </div>
-        <div class="UsersRequests">
-            <h2>Your Requests</h2>
-            <div class="DisplayRequests">
-                <div class="BandInfo">
-                    <p class="BoldBandInfo">Band Name</p>
-                    <p>Request Date</p>
-                    <p>Status: </p>
+
+        {% else %}
+
+            <form id="update_details" method="post" action="{% url 'bandsnap:user_profile' %}">
+
+                <div class="UserInfo">
+                    <div class="UserRow">
+                        <p class="UserText">Band Name</p>
+                        <p class="UserData">{}</p> <!-- Band needs a name -->
+                    </div>
+                    <div class="UserRow">
+                        <p class="UserText">Password</p>
+                        <a href="" class="UserData">Reset Password</a>
+                    </div>
+                    <div class="UserRow">
+                        <p class="UserText">Profile Photo</p>
+                        <img src="{% url 'static/images/userDetails.photo' %}" alt="Profile Photo" class="UserData">
+                    </div>
+                    <div class="UserRow">
+                        <p class="UserText">Description</p>
+                        <textarea class="UserData" id="AboutUser" name="AboutUser" placeholder={userDetails.description} style="height:200px"></textarea>
+                    </div>
+                    <div class="UserRow">
+                        <p class="UserText">Members</p>
+                        <ul class="UserData">
+                            {% for member in userDetails.artists %}
+                                <li onclick=removeArtist({member})>{member}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
                 </div>
-                <p><a href="{% url 'bandsnap:index' %}">Back to Homepage</a></p>
+
+                <button type="submit" name="updated_details">Update Details</button>
+            </form>
+
+            <form id="new_skills" method="post" action="{% url 'bandsnap:new_skills' %}">
+                <button type="submit" name="remove_artist">Remove artist</button>
+            </form>
+
+            <div class="UsersRequests">
+                <h2 style="float:left; margin-left:25px; margin-top:15px;">Your Requests</h2>
+                
+                <div class="DisplayRequests">
+                    {% for requests in userRequests %}
+
+                        <img class="BandLogo" src={{requests.Artist.photo.url}} alt="BandLogo">
+                        <div class="BandInfo">
+                            <p class="BoldBandInfo">{request.Artist.user.first_name} {request.Artist.user.last_name}</p>
+                            <p>{request.date}</p>
+                            <!-- Insert accept/reject buttons here -->
+                            <form id="user_request" method="post" action="{% url 'bandsnap:new_skills' %}">
+                                <button type="submit" name="accept">Accept Artist</button>
+                                <button type="submit" name="reject">Reject Artist</button>
+                            </form>
+                        </div>
+
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+
+            <div class="DisplayGigs">
+                {}
+            </div>
+
+        {% endif %}
+
+        
     </div>
-</body>
-</html>
+
+{% endblock %}
