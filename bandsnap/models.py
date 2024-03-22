@@ -18,20 +18,10 @@ class AbstractUser(models.Model):
         abstract = True
 
     user = models.OneToOneField(User,
-                                on_delete=models.PROTECT, 
+                                on_delete=models.CASCADE, 
                                 primary_key=True)
-    photo = models.ImageField(upload_to='profile_images', blank=True)
+    photo = models.ImageField(upload_to='profile_images', blank=False, default="default.jpg")
     description = models.TextField()
-
-    def __str__(self):
-        return self.user.username
-    
-
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-    description = models.TextField(blank=True)
-    skills = models.ManyToManyField('Skill', blank=True)
 
     def __str__(self):
         return self.user.username
