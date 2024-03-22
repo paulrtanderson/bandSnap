@@ -210,7 +210,6 @@ def display_search(request):
         band  = gig.band
         accepted_artists = band.artists.filter(request__accepted=True)
         artist_names = [escape(artist.user.get_full_name()) for artist in accepted_artists]
-        print(len(artists))
         template = render_to_string('bandsnap/gigs-result.html', {
             'profile_photo': escape(gig.band.photo.url),
             'bandname': escape(band.user.first_name),
