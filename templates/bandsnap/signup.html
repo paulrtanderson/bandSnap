@@ -19,17 +19,17 @@
             <div class="UserChoice">
                 <h2>What are you?</h2>
                 
-                <div class="Band">
+                <div onclick=chooseUserType(band) class="Band">
                     <h2>Band</h2>
-                    <img src="Band.png" alt="Band Image"> </src>
+                    <img src="{% static 'images/Band.png' %}" alt="Band Image"> </src>
                     
                     <p class="SignupText">I want to find great talent with ease!</p>
                     <p class="SignupText">Manage your artists!</p>
                 </div>
                 
-                <div class="Artist">
+                <div onclick=chooseUserType(artist) class="Artist">
                     <h2>Artist</h2>
-                    <img src="Artist.png" alt="Artist Image"> </src>
+                    <img  src="{% static 'images/Artist.png' %}" alt="Artist Image"> </src>
                     
                     <p class="SignupText">I want to find a band I can shred with!</p>
                     <p class="SignupText">Show off your skills to the world!</p>
@@ -39,17 +39,12 @@
             
             <div class="UserSignUp">
             
-                <form class="SignUpForm">
-                    <!-- External form -->
+                <form class="SignUpForm" method="post" action="{% url 'bandsnap:signup' %}">
 
-                    <label class="SignUpLabel" for="Username">Username:</label>
-                    <input class="SignUpInput" type="text" id="Username" name="Username"><br>
-                    <label class="SignUpLabel" for="Username">Password:</label>
-                    <input class="SignUpInput" type="text" id="Password" name="Password"><br>
-                    <label class="SignUpLabel" for="Username">Confirm Password:</label>
-                    <input class="SignUpInput" type="text" id="ConfirmPassword" name="ConfirmPassword"><br>
-                    <label class="SignUpLabel" for="AboutUser">About You (Optional):</label>
-                    <textarea class="SignUpInput" id="AboutUser" name="AboutUser" placeholder="Tell the world about yourself (max 1000 characters)..." style="height:200px"></textarea>
+                    {% csrf_token %}
+
+                    {{ user_form.as_p }}
+                    {{ profile_form.as_p }}
                     
                     <div class="row">
                         <input class="SignUpButton" type="submit" value="Sign Up">

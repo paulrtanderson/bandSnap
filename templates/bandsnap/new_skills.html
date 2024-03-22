@@ -1,0 +1,18 @@
+{% extends 'bandsnap/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    Add Skills 
+{% endblock %}
+
+{% block body_block %}
+
+    <form id="search_form" method="post" action="{% url 'bandsnap:new_skills' %}">
+
+        {% csrf_token %}
+        {{ skills.as_p }}
+        <button type="submit" name="submit">Add Skills</button>
+
+    </form>
+
+{% endblock %}

@@ -6,30 +6,19 @@
 {% endblock %}
 
 {% block body_block %}
+    <img class="LargeLogo" src = "{% static 'images/logo.jpg' %}" alt="bandsnap logo">
+
     <div class="SearchForPeople">
 
-        <form id="user-form" method="post" action="">
+        <form id="search_form" method="post" action="{% url 'bandsnap:search' %}">
 
-            <input type="text" size="50" placeholder="Enter a query..." name="query" id="query" />
+            {% csrf_token %}
+
             <button type="submit" name="submit">Search</button>
 
-            <div>
-                <p>I'm looking for:</p>
-            </div>
+            {{ search.as_p }}
 
-            <div>
-                <!-- Form content in here -->
-                {% for x in y do z %}
-
-                {% end for %}
-            </div>
 
         </form>
-    </div>
-
-    <!-- Maybe move buttons into base.html header, if !user.is_authenticated then display -->
-    <div class="LoginOrSignup">
-        <button class="AccountButtons" onclick="logIn()">Log In</button><br>
-        <button class="AccountButtons" onclick="signUp()">Sign Up</button>
     </div>
 {% endblock %}
