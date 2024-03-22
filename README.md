@@ -18,6 +18,7 @@ Wait until the environment is setup. Next, to create the database, run:
 python manage.py makemigrations
 python manage.py migrate
 python population_script.py
+python manage.py collectstatic
 ```
 Finally, to run the server, run:
 ```python manage.py runserver```
