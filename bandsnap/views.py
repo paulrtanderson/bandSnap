@@ -105,7 +105,7 @@ def artist_search(request):
         artists_by_name = artist_with_full_name.filter(full_name__icontains=query)
         artists_by_desc = Artist.objects.filter(description__icontains=query)
         artists_by_skills = Artist.objects.filter(skills__name__icontains=query)
-        artists = artists_by_name | artists_by_desc | artists_by_skills
+        artists = (artists_by_name | artists_by_desc | artists_by_skills).distinct()
         
         bands = Band.objects.filter(Q(user__first_name__icontains=query) |
                                     Q(description__icontains=query) |
