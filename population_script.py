@@ -38,7 +38,7 @@ def populate():
             "username": "band1",
             "password": "password1",
             "first_name":"The backburners",
-            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "photo_path": str(Path("profile_images" ) / "backbench.jpeg"),
             "description": "Description of band x",
             "needs_skills": ["Singing", "Guitar"]
         },
@@ -46,7 +46,7 @@ def populate():
             "username": "band2",
             "password": "password1",
             "first_name":"The best",
-            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "photo_path": str(Path("profile_images" ) / "best.jpeg"),
             "description": "Description of band x",
             "needs_skills": ["Bass", "Guitar"]
         },
@@ -54,7 +54,7 @@ def populate():
             "username": "band3",
             "password": "password1",
             "first_name":"The lucky ones",
-            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "photo_path": str(Path("profile_images" ) / "lucky.jpeg"),
             "description": "Description of band x",
             "needs_skills": ["Singing", "Guitar"]
         },
@@ -62,7 +62,7 @@ def populate():
             "username": "band4",
             "password": "password1",
             "first_name":"The nine",
-            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "photo_path": str(Path("profile_images" ) / "band.png"),
             "description": "Description of band x",
             "needs_skills": ["Singing", "Guitar"]
         },
@@ -70,7 +70,7 @@ def populate():
             "username": "band5",
             "password": "password5",
             "first_name": "The Rebels",
-            "photo_path": str(Path("profile_images") / "band5.jpeg"),
+            "photo_path": str(Path("profile_images") / "rebel.jpeg"),
             "description": "Description of band 5",
             "needs_skills": ["Singing", "Drums"]
         }
@@ -83,7 +83,7 @@ def populate():
             "password": "password1",
             "first_name":"John",
             "last_name":"Doe",
-            "photo_path": str(Path("profile_images" ) / "image1.jpeg"),
+            "photo_path": str(Path("profile_images" ) / "johndoe.jpeg"),
             "description": "Description of artist1",
             "skills": ["Singing", "Guitar"]  # Artist1 has skills in Singing and Guitar
         },
@@ -92,7 +92,7 @@ def populate():
             "password": "password2",
             "first_name":"Mary",
             "last_name":"Sue",
-            "photo_path":"image1.jpeg",
+            "photo_path":str(Path("profile_images" ) / "marysue.jpeg"),
             "description": "Description of artist2",
             "skills": ["Drums", "Bass"]  # Artist2 has skills in Drums and Bass
         },
@@ -101,7 +101,7 @@ def populate():
             "password": "password2",
             "first_name":"Jane",
             "last_name":"Smith",
-            "photo_path": "image1.jpeg",
+            "photo_path": str(Path("profile_images" ) / "janesmith.jpeg"),
             "description": "Description of artist2",
             "skills": ["Singing", "Bass"]  # Artist2 has skills in Drums and Bass
         },
@@ -110,7 +110,7 @@ def populate():
             "password": "password2",
             "first_name":"Albert",
             "last_name":"Denkin",
-            "photo_path": "image1.jpeg",
+            "photo_path": str(Path("profile_images" ) / "albertdenkin.jpeg"),
             "description": "Description of artist2",
             "skills": ["Drums", "Guitar"]  # Artist2 has skills in Drums and Bass
         },
@@ -119,7 +119,7 @@ def populate():
             "password": "password5",
             "first_name": "Emily",
             "last_name": "Brown",
-            "photo_path": str(Path("profile_images") / "artist5.jpeg"),
+            "photo_path": str(Path("profile_images") / "emilybrown.jpeg"),
             "description": "Description of artist 5",
             "skills": ["Keyboard", "Bass"]
         }

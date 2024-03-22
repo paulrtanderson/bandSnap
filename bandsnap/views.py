@@ -97,9 +97,8 @@ def join_band(request):
                     message += f"Error in {field}: {error['message']}" + "\n"
     
     return HttpResponse(message)
-    
-def artist_search(request):
-    query = request.GET.get('query')
+
+def search_models(query):
     if query:
         artist_with_full_name = Artist.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
         artists_by_name = artist_with_full_name.filter(full_name__icontains=query)
@@ -119,6 +118,12 @@ def artist_search(request):
         artists = Artist.objects.all()
         bands = Band.objects.all()
         gigs = Gig.objects.all()
+
+    return artists,bands,gigs
+    
+def display_search(request):
+    query = request.GET.get('query')
+    artists,bands,gigs = search_models(query)
         
     artists_data = []
     for profile in artists:
@@ -139,7 +144,8 @@ def artist_search(request):
             'description': escape(profile.description),
             'skills': skills,
             'form': RequestForm(),
-            'band_username':profile.user.username
+            'band_username':profile.user.username,
+            'user':request.user
         })
         bands_data.append(template)
 
@@ -155,7 +161,8 @@ def artist_search(request):
             'name': escape(gig.name),
             'description': escape(gig.description),
             'artists': artist_names,
-            'address': escape(gig.venue_address)
+            'address': escape(gig.venue_address),
+            'date':gig.date
         })
         gigs_data.append(template)
 

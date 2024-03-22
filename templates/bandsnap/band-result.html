@@ -1,4 +1,6 @@
 {% extends 'bandsnap/result-base.html' %} {% block body_block %}
+{% load bandsnap_tags %}
+
 <div class="col-auto mb-3 mb-sm-0">
     <img src="{{ profile_photo }}" class="img-fluid rounded-circle" alt="Person" style="width: 150px" />
 </div>
@@ -15,9 +17,13 @@
     </ul>
 </div>
 <div class="col">
+    {% if user.is_authenticated %}
+    {% if user|is_artist %}
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#BandRequestModal" onclick="setBandUsername('{{ band_username }}')" >
         Request to join
     </button>
+    {% endif %}
+    {% endif %}
 </div>
 
   
