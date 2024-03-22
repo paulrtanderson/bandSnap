@@ -3,9 +3,13 @@
 First, ensure that Python 3.10 is installed on your machine.
   
 Next, clone the repository:
-```git clone https://github.com/paulrtanderson/wad_group_project_bandsnap.git```
+```
+git clone https://github.com/paulrtanderson/wad_group_project_bandsnap.git
+```
 To create the Conda environment, run:
-```conda create -n bandsnap python=3.10```
+```
+conda create -n bandsnap python=3.10
+```
 Then, to setup the environment:
 ```
 cd wad_group_project_bandsnap
@@ -21,8 +25,10 @@ python population_script.py
 python manage.py collectstatic
 ```
 Finally, to run the server, run:
-```python manage.py runserver```
+```
+python manage.py runserver
+```
 
 # Pythonanywhere
 The project can also be accessed on PythonAnywhere at the following URL:  
-<http://bandsnap.eu.pythonanywhere.com/>
+<https://bandsnap.eu.pythonanywhere.com/>
