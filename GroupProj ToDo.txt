@@ -1,0 +1,20 @@
+HTML/CSS/Javascript:
+- index.html, signup.html, search.html, user_profile.html
+  - Alter CSS to match wireframe
+
+Backend:
+- Views.py
+  - Look over index, search, user_profile and new_skills
+  - Check if request.methods ok
+  - Check if data being updated within POST requests
+  - Check if request.user.<attribute>.exist() works so user_profile can swap between band/artist view
+  - Check if filters suitable for search method
+  - check index with same as above for forms
+
+- Models.py
+  - Added Search for index form
+
+- Forms.py
+  - Added SearchForm for index.html form
+  - Added NewSkillsForm for new_skills.html
+

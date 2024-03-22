@@ -1,0 +1,347 @@
+/* Header Content */
+
+/* Nav Content */
+
+ul
+{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li
+{
+  float: left;
+}
+
+li a
+{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover
+{
+  background-color: white;
+  color: black;
+}
+
+/* Body Content */
+/* Classes used in Index Page */
+
+.SearchForPeople {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Aligns content to the top */
+}
+
+
+
+/* Classes used in Sign Up Page */
+.header 
+{
+  background-color:white;
+  border:1px solid black;
+  height:100px;
+  width:92.5%;
+  font-size:20px;
+  font-weight:bold;
+}
+
+.SignUpHeading
+{
+	display:inline-block;
+	vertical-align:top;
+	margin-top:30px;
+	margin-left:100px;
+}
+
+.UserChoice, .UserSignUp
+{
+  display:inline-block;
+  background-color: white;
+  border:1px solid black;
+  height:600px;
+  width:46.2%;
+  text-align:center;
+  font-size:20px;
+  float:left;
+}
+
+.Band, .Artist
+{
+	width:38%;
+	height:400px;
+	margin:0 auto;
+	display:inline-block;
+	float:left;
+	border:1px solid black;
+	border-radius:25px;
+}
+
+.Band
+{
+	margin-left:50px;
+	margin-right:20px;
+}
+
+.Artist
+{
+	margin-left:20px;
+	margin-right:50px;
+}
+
+.SignUpText
+{
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.SignUpForm
+{
+	margin: 0 auto;
+}
+
+.SignUpInput
+{
+	margin-top:15px;
+	margin-bottom:15px;
+	margin-right:30px;
+	display:inline-block;
+	width:70%;
+	float:right;
+}
+
+.SignUpLabel
+{
+	display:inline-block;
+	margin:15px;
+	
+}
+
+.SignUpButton
+{
+	height: 35px;
+    background-color: white;
+    border: 1px solid black;
+	border-radius: 5px;
+	font-weight: bold;
+	font-size: 20px;	
+}
+
+/* Responsive layout - makes the three columns stack on top of each other instead of next to each other 
+@media (max-width: 600px) 
+{
+  .column 
+  {
+  	width: 100%;
+  }
+}*/
+
+/*-------------------------------------*/
+
+
+/* Classes used in Search Page */
+.SearchAndDisplay
+{
+    width:92.5%;
+	display:inline-block;
+}
+
+.SearchHeader
+{
+	float:left;
+	background-color:white;
+	height:60px;
+    width:92.5%;
+    font-size:20px;
+}
+
+.SearchBar
+{
+	width:60%;
+	margin:0 auto;
+	box-sizing:border-box;
+	margin-bottom:20px;
+}
+
+.DisplaySearch 
+{
+  width: 60%;
+  margin: 0 auto;
+  background-color: white;
+  height:100%;
+  border: 1px solid black;
+  font-size: 15px;
+  box-sizing: border-box;
+  overflow:scroll;
+  scrollbar-color:grey;
+  scrollbar-width: thin;
+}
+
+.DisplayHeading
+{
+  width: 60%;
+  margin: 0 auto;
+  background-color: white;
+  border: 1px solid black;
+  height:50px;
+}
+
+#SearchOptions
+{
+	padding-right:40px;
+	padding-left:40px;
+	display:inline-block;
+}
+
+.DisplayProfile
+{
+  width: 85%;
+  margin:0 auto;
+  background-color: white;
+  border: 1px solid black;
+  height:90px;
+  margin-top:20px;
+}
+
+.UserProfile
+{
+	margin-top:20px;
+	display:inline-block;
+	margin-left:10px;
+	margin-right:20px;
+	vertical-align:top;
+}
+
+.NameAndAbout
+{
+	margin-top:5px;
+	display:inline-block;
+	width:40%;
+}
+
+.ProfileSkills
+{
+	margin-top:5px;
+	display:inline-block;
+	width:40%;
+	vertical-align:top;
+}
+
+/*-------------------------------------*/
+
+/*Classes used in User Profile*/
+
+.UsersProfile, .UsersRequests
+{
+  display:inline-block;
+  background-color: white;
+  border:1px solid black;
+  height:1000px;
+  text-align:center;
+  font-size:20px;
+  float:left;
+}
+
+.UsersProfile
+{
+  width:67%;
+}
+
+.UsersRequests
+{
+  width:25.4%;
+}
+
+.UserInfo {
+	width:100%;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+  border:1px solid black;
+}
+
+.UserRow {
+    display: flex;
+    align-items: center; 
+}
+
+.UserText {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.UserData {
+    font-size: 18px;
+    margin-left: 50px;
+	width:40%;
+	float:right;
+}
+
+.DisplayRequests
+{
+  width: 90%;
+  background-color: white;
+  border: 1px solid black;
+  height:120px;
+  margin-left:25px;
+  font-size:14px;
+  float:left;
+}
+
+.BandLogo
+{
+	margin-top:20px;
+	margin-left:20px;
+	width:80px;
+	height:80px;
+	display:inline-block;
+	float:left;
+}
+
+
+.BandInfo
+{
+	display:inline-block;
+	font-size:14px;
+}
+
+.BoldBandInfo
+{
+	font-size:16px;
+	font-weight:bold;
+}
+
+/*-------------------------------------*/
+
+/* General use Classes/IDs */
+
+.LargeLogo
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+	height:600px;
+	width:800px;
+}
+
+.SmallLogo
+{
+	display:inline-block;
+}
+	
+.hide-label label
+{
+  display: none;
+}	
+  
+
+
