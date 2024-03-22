@@ -26,9 +26,9 @@ MEDIA_DIR = BASE_DIR / 'media'
 SECRET_KEY = 'django-insecure-b$!scj*hbzx#o^nv1$k9eema%ap%e#!xy1=w(kg#f=g2l972w5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'http://bandsnap.eu.pythonanywhere.com/']
 
 
 # Application definition
