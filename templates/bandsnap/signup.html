@@ -6,21 +6,55 @@
 {% endblock %}
 
 {% block body_block %}
+
+
+
     <h1>Signup for bandsnap</h1>
     {% if registered %}
         bandsnap says: <strong>thank you for signing up!</strong>
         <a href="{% url 'bandsnap:index' %}">Return to the homepage.</a><br />
     {% else %}
-        <strong>signup here!</strong><br />
-        <form id="user_form" method="post" action="{% url 'bandsnap:signup' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-fill mb-5">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab" href="#artists">Artist</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#bands">Band</a>
+            </li>
+            </ul>
+        
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane container fade active show" id="artists">
+                    <strong>signup here!</strong><br />
+                    <form id="user_form" method="post" action="{% url 'bandsnap:signupartist' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
             
-            {{ user_form.as_p }}
-            {{ profile_form.as_p }}
-
+                        
+                        {{ user_form.as_p }}
+                        {{ artist_form.as_p }}
             
-            <input type="submit" name="submit" value="Signup" />
-        </form>
+                        
+                        <input type="submit" name="submit" value="Signup" />
+                    </form>
+                </div>
+                <div class="tab-pane container fade" id="bands">
+                    <strong>signup here!</strong><br />
+                    <form id="user_form" method="post" action="{% url 'bandsnap:signupband' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+            
+                        
+                        {{ user_form.as_p }}
+                        {{ band_form.as_p }}
+            
+                        
+                        <input type="submit" name="submit" value="Signup" />
+                    </form>
+                </div>
+            </div>
+
+
+
     {% endif %}
 {% endblock %}

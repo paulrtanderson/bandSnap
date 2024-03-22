@@ -24,7 +24,7 @@ function search() {
             }
         }
     };
-    xhttp.open("GET", "/bandsnap/artist-search/?query=" + query, true);
+    xhttp.open("GET", "/bandsnap/display-search/?query=" + query, true);
     xhttp.send();
 }
 function setBandUsername(bandusername){

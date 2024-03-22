@@ -8,15 +8,12 @@ from django.template.loader import render_to_string
 from django.utils.html import escape
 from django.db.models import Q, Value
 from django.db.models.functions import Concat
-from bandsnap.models import Artist, Band, Gig
-from bandsnap.forms import UserForm, UserProfileForm, RequestForm
+from bandsnap.models import Artist, Band, Gig, Request
+from bandsnap.forms import UserForm, RequestForm,ArtistForm,BandForm
 from django.contrib import messages
 
 def index(request):
     context_dict = {}
-    request.session.set_test_cookie()
-    visitor_cookie_handler(request)
-    context_dict['visits'] = request.session['visits']
     context_dict['active_link'] = "index"
     response = render(request,'bandsnap/index.html',context=context_dict)
     return response
@@ -24,36 +21,95 @@ def index(request):
 def signup(request):
     context_dict = {}
     registered = False
-    
-    if request.method == 'POST':
-        user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
-        
-        if user_form.is_valid() and profile_form.is_valid():
-            user = user_form.save()
-            user.set_password(user.password)
-            user.save()
-            
-            profile = profile_form.save(commit=False)
-            profile.user = user
-            
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
-                
-            profile.save()
-            registered = True
-        else:
-            print(user_form.errors, profile_form.errors)
-    else:
-        user_form = UserForm()
-        profile_form = UserProfileForm()
+
+    user_form = UserForm()
+    artist_form = ArtistForm()
+    band_form = BandForm()
     
     context_dict['user_form'] = user_form
-    context_dict['profile_form'] = profile_form
+    context_dict['artist_form'] = artist_form
+    context_dict['band_form'] = band_form
     context_dict['registered'] = registered
     context_dict['active_link'] = "signup"
     
     return render(request, 'bandsnap/signup.html', context_dict)
+
+def signupartist(request):
+    context_dict = {}
+    registered = False
+    
+    if request.method == 'POST':
+
+        user_form = UserForm(request.POST)
+        artist_form = ArtistForm(request.POST)
+        band_form = BandForm()
+
+        
+        if user_form.is_valid() and artist_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            
+            profile = artist_form.save(commit=False)
+            profile.user = user
+            
+            if 'photo' in request.FILES:
+                profile.photo = request.FILES['photo']
+                
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors, artist_form.errors)
+    else:
+        user_form = UserForm()
+        artist_form = ArtistForm()
+    
+    context_dict['user_form'] = user_form
+    context_dict['artist_form'] = artist_form
+    context_dict['band_form'] = band_form
+    context_dict['registered'] = registered
+    context_dict['active_link'] = "signup"
+    
+    return render(request, 'bandsnap/signup.html', context_dict)
+
+def signupband(request):
+    context_dict = {}
+    registered = False
+    
+    if request.method == 'POST':
+
+        user_form = UserForm(request.POST)
+        band_form = BandForm(request.POST)
+        artist_form = ArtistForm()
+
+        
+        if user_form.is_valid() and band_form.is_valid():
+            user = user_form.save()
+            user.set_password(user.password)
+            user.save()
+            
+            profile = band_form.save(commit=False)
+            profile.user = user
+            
+            if 'photo' in request.FILES:
+                profile.photo = request.FILES['photo']
+                
+            profile.save()
+            registered = True
+        else:
+            print(user_form.errors, band_form.errors)
+    else:
+        user_form = UserForm()
+        band_form = ArtistForm()
+    
+    context_dict['user_form'] = user_form
+    context_dict['artist_form'] = artist_form
+    context_dict['band_form'] = band_form
+    context_dict['registered'] = registered
+    context_dict['active_link'] = "signup"
+    
+    return render(request, 'bandsnap/signup.html', context_dict)
+
 def user_login(request):
     context_dict = {}
     context_dict['active_link'] = "login"
@@ -97,9 +153,8 @@ def join_band(request):
                     message += f"Error in {field}: {error['message']}" + "\n"
     
     return HttpResponse(message)
-    
-def artist_search(request):
-    query = request.GET.get('query')
+
+def search_models(query):
     if query:
         artist_with_full_name = Artist.objects.annotate(full_name=Concat('user__first_name', Value(' '), 'user__last_name'))
         artists_by_name = artist_with_full_name.filter(full_name__icontains=query)
@@ -119,6 +174,12 @@ def artist_search(request):
         artists = Artist.objects.all()
         bands = Band.objects.all()
         gigs = Gig.objects.all()
+
+    return artists,bands,gigs
+    
+def display_search(request):
+    query = request.GET.get('query')
+    artists,bands,gigs = search_models(query)
         
     artists_data = []
     for profile in artists:
@@ -139,7 +200,8 @@ def artist_search(request):
             'description': escape(profile.description),
             'skills': skills,
             'form': RequestForm(),
-            'band_username':profile.user.username
+            'band_username':profile.user.username,
+            'user':request.user
         })
         bands_data.append(template)
 
@@ -148,14 +210,14 @@ def artist_search(request):
         band  = gig.band
         accepted_artists = band.artists.filter(request__accepted=True)
         artist_names = [escape(artist.user.get_full_name()) for artist in accepted_artists]
-        print(len(artists))
         template = render_to_string('bandsnap/gigs-result.html', {
             'profile_photo': escape(gig.band.photo.url),
             'bandname': escape(band.user.first_name),
             'name': escape(gig.name),
             'description': escape(gig.description),
             'artists': artist_names,
-            'address': escape(gig.venue_address)
+            'address': escape(gig.venue_address),
+            'date':gig.date
         })
         gigs_data.append(template)
 
@@ -172,29 +234,9 @@ def search(request):
 
 def about(request):
     context_dict = {}
-    request.session.set_test_cookie()
-    visitor_cookie_handler(request)
-    context_dict['visits'] = request.session['visits']
     context_dict['active_link'] = "about"
     response = render(request,'bandsnap/about.html',context=context_dict)
     return response
-
-def get_server_side_cookie(request, cookie, default_val=None):
-    val = request.session.get(cookie)
-    if not val:
-        val = default_val
-    return val
-
-def visitor_cookie_handler(request):
-    visits = int(request.COOKIES.get('visits', '1'))
-    last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
-    last_visit_time = datetime.strptime(last_visit_cookie[:-7], '%Y-%m-%d %H:%M:%S')
-    if (datetime.now() - last_visit_time).days > 0:
-        visits = visits + 1
-        request.session['last_visit'] = str(datetime.now())
-    else:
-        request.session['last_visit'] = last_visit_cookie
-    request.session['visits'] = visits
     
 @login_required
 def restricted(request):
@@ -208,8 +250,75 @@ def user_logout(request):
 @login_required
 def user_profile(request):
     context_dict = {'active_link': 'profile'}
+    context_dict['user'] = request.user
+
+    if is_artist(request.user):
+            artist = Artist.objects.get(user = request.user)
+            context_dict['userPhoto'] = artist.photo.url
+            pending_requests = Request.objects.filter(artist=artist)
+            context_dict['pending_requests'] = pending_requests
+            if request.method == "POST":
+                form = ArtistForm(request.POST, instance=artist)
+                if form.is_valid():
+                    profile = form.save(commit=False)
+                    if 'photo' in request.FILES:
+                        profile.photo = request.FILES['photo']
+                    profile.save()
+                    return redirect(reverse('bandsnap:user_profile'))
+            else:
+                form = ArtistForm(instance=artist)
+
+            context_dict['form'] = form
+
+
+    elif is_band(request.user):
+            band = Band.objects.get(user=request.user)
+            context_dict['userPhoto'] = band.photo.url
+            context_dict['accepted_requests'] = Request.objects.filter(band=band,accepted=True)
+            pending_requests = Request.objects.filter(band=band,accepted=False)
+            context_dict['pending_requests'] = pending_requests
+            if request.method == "POST":
+                form = BandForm(request.POST, instance=band)
+                if form.is_valid():
+                    profile = form.save(commit=False)
+                    if 'photo' in request.FILES:
+                        profile.photo = request.FILES['photo']
+                    profile.save()
+                    return redirect(reverse('bandsnap:user_profile'))
+            else:
+                form = BandForm(instance=band)
+
+            context_dict['form'] = form
+
     return render(request, 'bandsnap/user_profile.html', context=context_dict)
 
+def accept_request(request):
+    if request.method == "POST":
+        join_request = Request.objects.get(id=request.POST.get('accept'))
+        join_request.accepted = True
+        join_request.save()
+    return redirect(reverse('bandsnap:user_profile'))
+
+def reject_request(request):
+    if request.method == "POST":
+        join_request = Request.objects.get(id=request.POST.get('reject'))
+        join_request.delete()
+    return redirect(reverse('bandsnap:user_profile'))
+
+def is_artist(user):
+    try:
+        artist = Artist.objects.get(user=user)
+        return True
+    except Artist.DoesNotExist:
+        return False
+    
+
+def is_band(user):
+    try:
+        band = Band.objects.get(user=user)
+        return True
+    except Band.DoesNotExist:
+        return False
 
 
 
