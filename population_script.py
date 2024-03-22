@@ -5,7 +5,7 @@ import django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "wad_group_project_bandsnap.settings")
 django.setup()
 
-from bandsnap.models import Artist, Skill,Gig,Band,Request
+from bandsnap.models import Artist, Skill,Gig,Band,Request,User
 # Now you can access Django settings
 from django.conf import settings
 from pathlib import Path
@@ -17,10 +17,14 @@ from django.contrib.auth.models import User
 
 def delete_existing_data():
     Gig.objects.all().delete()
-    Artist.objects.all().delete()
-    Band.objects.all().delete()
+    Request.objects.all().delete()
+    for artist in Artist.objects.all():
+         user = artist.user
+         user.delete
+    for band in Band.objects.all():
+         user = band.user
+         user.delete
     Skill.objects.all().delete()
-
 
 
 def populate():
@@ -260,7 +264,7 @@ def add_band(band_data):
         band.save()
 
 def create_request(artist, band):
-    request, created = Request.objects.get_or_create(artist=artist, band=band, defaults={'accepted': True})
+    request, created = Request.objects.get_or_create(artist=artist, band=band, defaults={'accepted': False})
     return request
 
 def add_gig(gig_data):

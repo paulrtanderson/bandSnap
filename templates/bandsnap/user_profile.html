@@ -1,47 +1,99 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>User Profile</title>
-</head>
-<body>
-    <div class="row">
-        <div class="UsersProfile">
-            <h2>Your Profile</h2>
+{% extends 'bandsnap/base.html' %}
+{% load static %}
+{% load bandsnap_tags %}
+{% block title_block %}
+    User Profile
+{% endblock %}
 
-            <div class="UserInfo">
-                <div class="UserRow">
-                    <p class="UserText">Username:</p>
-                    <p class="UserData">{{ user.username }}</p>
+{% block body_block %}
+    
+
+    <div class="row">
+        <div class="UserRow">
+            <p class="UserText">Username</p>
+            <p class="UserData">{{user.username}}</p>
+        </div>
+        <div class="UserRow">
+            <p class="UserText">Profile Photo</p>
+            <img src="{{ userPhoto }}" alt="Profile Photo" class="UserData userPhoto">
+        </div>
+
+        <form id="user_form" method="post" action="{% url 'bandsnap:user_profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            
+            <input type="submit" name="submit" value="Save changes"/>
+        </form>
+
+        {% if user|is_artist %}
+            
+            <div class="UsersRequests">
+                <h2 style="float:left; margin-left:25px; margin-top:15px;">Your Requests</h2>
+                
+                <div class="DisplayRequests">
+                    {% for requests in pending_requests %}
+
+                        <img class="BandLogo" src="{{ requests.band.photo.url }}" alt="BandLogo">
+                        <div class="BandInfo">
+                            <p class="BoldBandInfo">{{ requests.band.user.first_name }}</p>
+                            <p>{{ requests.date }}</p>
+                            {% if requests.accepted %}
+                            <p>Status: accepted, you are in this band!</p>
+                            {% else %}
+                            <p>Status: pending</p>
+                            {% endif %}
+                        </div>
+
+                    {% endfor %}
                 </div>
-                <div class="UserRow">
-                    <p class="UserText">Profile Photo:</p>
-                    <p class="UserData">{{ profile.profile_photo }}</p>
-                </div>
-                <div class="UserRow">
-                    <p class="UserText">Description:</p>
-                    <p class="UserData">{{ profile.description }}</p>
-                </div>
-                <div class="UserRow">
-                    <p class="UserText">Skills:</p>
-                    <ul class="UserData">
-                        {% for skill in profile.skills.all %}
-                            <li>{{ skill.name }}</li>
+            </div>
+
+        {% endif %}
+
+        {% if user|is_band %}
+
+            <div class="UserRow">
+                <p class="UserText">Members</p>
+                <ul class="UserData">
+                    {% for member in accepted_requests %}
+                        <li>{{ member.artist.user.first_name }} {{ member.artist.user.last_name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {%  if pending_requests %}
+                <div class="UsersRequests">
+                    <h2 style="float:left; margin-left:25px; margin-top:15px;">Your Requests</h2>
+                    <br>
+                    <div class="DisplayRequests">
+                        {% for request in pending_requests %}
+
+                            <img class="BandLogo" src={{request.artist.photo.url}} alt="BandLogo" style="width: 200px;">
+                            <div class="BandInfo">
+                                <p class="BoldBandInfo">{{ request.artist.user.first_name }} {{ request.artist.user.last_name }}</p>
+                                <p>{{ request.date }}</p>
+                                <p>{{ request.message }}</p>
+
+                                <form id="user_request" method="post" action="{% url 'bandsnap:accept_artist' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" name="accept" value="{{ request.id }}">Accept Artist</button>
+                                </form>
+                                <form id="user_request" method="post" action="{% url 'bandsnap:reject_artist' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" name="reject" value="{{ request.id }}">Reject Artist</button>
+                                </form>
+                            </div>
+
                         {% endfor %}
-                    </ul>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="UsersRequests">
-            <h2>Your Requests</h2>
-            <div class="DisplayRequests">
-                <div class="BandInfo">
-                    <p class="BoldBandInfo">Band Name</p>
-                    <p>Request Date</p>
-                    <p>Status: </p>
-                </div>
-                <p><a href="{% url 'bandsnap:index' %}">Back to Homepage</a></p>
-            </div>
-        </div>
+            {% endif %}
+
+        {% endif %}
+
+        
     </div>
-</body>
-</html>
+
+{% endblock %}

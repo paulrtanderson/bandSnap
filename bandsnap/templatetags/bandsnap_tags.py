@@ -10,3 +10,11 @@ def is_artist(user):
         return True
     except Artist.DoesNotExist:
         return False
+    
+@register.filter
+def is_band(user):
+    try:
+        band = Band.objects.get(user=user)
+        return True
+    except Band.DoesNotExist:
+        return False
