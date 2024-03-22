@@ -264,7 +264,7 @@ def add_band(band_data):
         band.save()
 
 def create_request(artist, band):
-    request, created = Request.objects.get_or_create(artist=artist, band=band, defaults={'accepted': False})
+    request, created = Request.objects.get_or_create(artist=artist, band=band, defaults={'accepted': True})
     return request
 
 def add_gig(gig_data):
